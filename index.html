@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Attendance Keeper – subjects, timetable and attendance tracker">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<title>Attendance Keeper</title>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">COLLEGE DASHBOARD</div>
+      <h1>Attendance Keeper</h1>
+    </div>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">◐</button>
+  </header>
+
+  <main>
+    <section class="page active" id="page-dashboard">
+      <div class="hero">
+        <div>
+          <div class="muted">Overall attendance</div>
+          <div class="hero-pct" id="overallPct">0%</div>
+          <div class="muted" id="overallMessage">Add a subject to begin.</div>
+        </div>
+        <div class="ring" id="overallRing"><span>0%</span></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span>Present</span><strong id="presentTotal">0</strong></div>
+        <div class="stat"><span>Absent</span><strong id="absentTotal">0</strong></div>
+        <div class="stat"><span>Total</span><strong id="classTotal">0</strong></div>
+      </div>
+
+      <div class="section-head">
+        <div><div class="eyebrow">TODAY</div><h2>Today's classes</h2></div>
+        <button class="link-btn" data-go="timetable">Timetable →</button>
+      </div>
+      <div id="todayClasses" class="stack"></div>
+
+      <div class="section-head">
+        <div><div class="eyebrow">TRACKING</div><h2>Subjects</h2></div>
+        <button class="primary compact" id="quickSubject">+ Add</button>
+      </div>
+      <div id="dashboardSubjects" class="stack"></div>
+    </section>
+
+    <section class="page" id="page-subjects">
+      <div class="section-head">
+        <div><div class="eyebrow">MANAGE</div><h2>Subjects</h2></div>
+        <button class="primary" id="addSubject">+ Add subject</button>
+      </div>
+      <div id="subjectsList" class="stack"></div>
+    </section>
+
+    <section class="page" id="page-timetable">
+      <div class="section-head">
+        <div><div class="eyebrow">WEEKLY SCHEDULE</div><h2>Timetable</h2></div>
+        <button class="primary" id="addClass">+ Add class</button>
+      </div>
+      <div id="dayTabs" class="day-tabs"></div>
+      <div id="timetableList" class="stack"></div>
+    </section>
+
+    <section class="page" id="page-attendance">
+      <div class="section-head">
+        <div><div class="eyebrow">MARK CLASSES</div><h2>Attendance</h2></div>
+      </div>
+      <div id="attendanceList" class="stack"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav active" data-go="dashboard"><span>⌂</span><small>Home</small></button>
+    <button class="nav" data-go="subjects"><span>▦</span><small>Subjects</small></button>
+    <button class="nav" data-go="timetable"><span>◷</span><small>Timetable</small></button>
+    <button class="nav" data-go="attendance"><span>✓</span><small>Attendance</small></button>
+  </nav>
+</div>
+
+<div class="modal hidden" id="subjectModal">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="subjectModalTitle">Add subject</h2><button class="icon-btn" data-close="subjectModal">×</button></div>
+    <form id="subjectForm">
+      <input type="hidden" id="subjectId">
+      <label>Subject name<input id="subjectName" required placeholder="Engineering Mathematics"></label>
+      <div class="grid2">
+        <label>Code<input id="subjectCode" placeholder="MAT101"></label>
+        <label>Target %<input id="subjectTarget" type="number" min="1" max="100" value="75"></label>
+      </div>
+      <div class="grid2">
+        <label>Teacher<input id="subjectTeacher" placeholder="Teacher name"></label>
+        <label>Room<input id="subjectRoom" placeholder="AB-1"></label>
+      </div>
+      <label>Semester Classes Left<input id="semesterClassesLeft" type="number" min="0" step="1" placeholder="e.g. 30"><small>Number of classes still planned for this subject.</small></label>
+      <div class="form-actions"><button type="button" class="secondary" data-close="subjectModal">Cancel</button><button class="primary">Save subject</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal hidden" id="classModal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Add timetable class</h2><button class="icon-btn" data-close="classModal">×</button></div>
+    <form id="classForm">
+      <label>Subject<select id="classSubject" required></select></label>
+      <div class="grid2">
+        <label>Day<select id="classDay"></select></label>
+        <label>Repeat<select id="classRepeat"><option value="weekly">Every week</option><option value="once">This schedule only</option></select></label>
+      </div>
+      <div class="grid2">
+        <label>Start<input id="classStart" type="time" required></label>
+        <label>End<input id="classEnd" type="time" required></label>
+      </div>
+      <div class="form-actions"><button type="button" class="secondary" data-close="classModal">Cancel</button><button class="primary">Save class</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
